@@ -20,14 +20,18 @@ body {
 }
 
 .button {
-    font-family: 'Times New Roman', Times, serif;
-    font-size: 18px;
-    width: 100px;
-    height: 40px;
-    border: 3.5px solid black;
-    border-radius: 10px;
-    cursor: pointer;
-    background-color: white;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 18px;
+  width: 100px;
+  height: 40px;
+  border: 3.5px solid black;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.808);
+}
+
+.button:hover {
+  background-color: rgba(255, 255, 255, 0.493);
 }
 
 .difficulty {
@@ -39,6 +43,10 @@ body {
 #restart-button {
     background-color:#EE90EE;
     margin-top: 1rem;
+}
+
+#restart-button:hover {
+  background-color:#ee90ee85;
 }
 
 #score-text {
