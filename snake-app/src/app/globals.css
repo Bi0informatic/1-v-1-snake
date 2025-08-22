@@ -24,3 +24,58 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+body {
+    background-color: #90EE90;
+}
+
+#container {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+#game-canvas {
+    border: 3px solid black;
+}
+
+.scoreText {
+    font-size: 50px;
+    color: black;
+    margin-top: 10px;
+}
+
+.button {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 18px;
+    width: 100px;
+    height: 40px;
+    border: 3.5px solid black;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.difficulty {
+    display:block;
+    margin: auto;
+    margin-top: 1rem;
+}
+
+#restart-button {
+    background-color:#EE90EE;
+}
+
+#score-text {
+    font-family:'Times New Roman', Times, serif;
+}
+
+#score-text::before {
+    content: "🍎: ";
+}
+
+#highscore-text{
+    font-family: 'Courier New', Courier, monospace;
+}
+
+#highscore-text::before {
+    content: "HIGHSCORE: "
+}
