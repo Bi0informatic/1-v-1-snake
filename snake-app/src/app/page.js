@@ -1,4 +1,5 @@
-import GameBoard from "./components/gameboard";
+import GameBoard from "./components/GameBoard.js";
+import Buttons from "./components/Buttons.js";
 
 export default function Home() {
   return (
@@ -6,10 +7,7 @@ export default function Home() {
       <div id="highscore-text" className="scoreText">0</div>
         <GameBoard/>
         <div id="score-text" className="scoreText">0</div>
-        <button id="restart-button" className="button">Restart</button> 
-        <button id="easy-button" className="difficulty button">Easy</button>
-        <button id="normal-button" className="difficulty button">Normal</button>
-        <button id="hard-button" className="difficulty button">Hard</button>
+        <Buttons/>
     </div>
   );
 }
