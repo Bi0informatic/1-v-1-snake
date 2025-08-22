@@ -35,7 +35,8 @@ body {
 }
 
 #game-canvas {
-    border: 3px solid black;
+  border: 3px solid black;
+  margin: auto;
 }
 
 .scoreText {
