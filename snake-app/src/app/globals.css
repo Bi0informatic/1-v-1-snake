@@ -1,30 +1,5 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
 body {
     background-color: #90EE90;
 }
@@ -42,7 +17,6 @@ body {
 .scoreText {
     font-size: 50px;
     color: black;
-    margin-top: 10px;
 }
 
 .button {
@@ -53,6 +27,7 @@ body {
     border: 3.5px solid black;
     border-radius: 10px;
     cursor: pointer;
+    background-color: white;
 }
 
 .difficulty {
@@ -63,10 +38,12 @@ body {
 
 #restart-button {
     background-color:#EE90EE;
+    margin-top: 1rem;
 }
 
 #score-text {
     font-family:'Times New Roman', Times, serif;
+    margin-top: -1rem;
 }
 
 #score-text::before {
