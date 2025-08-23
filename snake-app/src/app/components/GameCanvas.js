@@ -19,14 +19,14 @@ export default function GameCanvas({snake, food, running}) {
         drawFood(ctx, food);
         drawSnake(ctx, snake);
 
-    })
 
-    if (!running) {
-        ctx.font = "50px Times New Roman";
-        ctx.fillStyle = "black";
-        ctx.textAlign = "center";
-        ctx.fillText("GAME OVER!", gameWidth/2, gameHeight/2);
-    }
+        if (!running) {
+            ctx.font = "50px Times New Roman";
+            ctx.fillStyle = "black";
+            ctx.textAlign = "center";
+            ctx.fillText("GAME OVER!", gameWidth/2, gameHeight/2);
+        }
+    });
 
     return <canvas id="game-canvas" ref={canvasRef} width={canvasSize} height={canvasSize}>Your browser does not support the HTML5 canvas tag.</canvas>;
 }

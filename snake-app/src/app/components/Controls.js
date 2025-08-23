@@ -1,3 +1,5 @@
+import React from 'react';
+
 export default function Controls({onRestart, onSetSpeed}) {
     return (<div id="control-buttons">
         <button id="restart-button" className="button" onclick={onRestart}>Restart</button>
