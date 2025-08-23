@@ -26,7 +26,7 @@ export function useSnakeGame(tickSpeed) {
 
     const createFood = useCallback(()=>{
         const rand = (max) => Math.round((Math.random() * max) / unitSize) * unitSize;
-        setFood({x: rand(canvasSize), y: (canvasSize)});
+        setFood({x: rand(canvasSize), y: rand(canvasSize)});
     }, []);
 
     const startGame = useCallback(()=>{
@@ -83,7 +83,7 @@ export function useSnakeGame(tickSpeed) {
 
             let ate = false;
             if (head.x === food.x && head.y === food.y) {
-                setScore((s)=>s++);
+                setScore((s)=>s + 1);
                 ate = true;
                 createFood();
             }
@@ -106,6 +106,14 @@ export function useSnakeGame(tickSpeed) {
 
         return () => clearTimeout(id);
     }, [snake, dir, running, tickSpeed, food, score, createFood]);
+
+    useEffect(()=>{
+        if (!running) return;
+        const id = setTimeout(()=>{
+            console.log(food);
+            return () => clearTimeout(id)
+        }, 2000)
+    })
 
     return  {
         snake, 
