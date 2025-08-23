@@ -1,17 +1,13 @@
-import GameBoard from "./components/GameBoard.js";
 import RestartButton from "./components/RestartButton.js";
 import DifficultyButtons from "./components/DifficultyButtons.js";
 import ScoreBoard from "./components/ScoreBoard.js";
-import App from "./components/App.js";
 
 export default function Home() {
   return (
     <div id="container">
-      <App/>
       <ScoreBoard/>
-      <GameBoard/>
+      <canvas id="game-canvas" width="500" height="500">Your browser does not support the HTML5 canvas tag.</canvas>
       <RestartButton/>
       <DifficultyButtons/>
-    </div>
-  );
+    </div>);
 }
