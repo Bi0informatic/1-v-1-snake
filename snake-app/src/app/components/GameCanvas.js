@@ -24,7 +24,7 @@ export default function GameCanvas({snake, food, running}) {
             ctx.font = "50px Times New Roman";
             ctx.fillStyle = "black";
             ctx.textAlign = "center";
-            ctx.fillText("GAME OVER!", gameWidth/2, gameHeight/2);
+            ctx.fillText("GAME OVER!", canvasSize/2, canvasSize/2);
         }
     });
 

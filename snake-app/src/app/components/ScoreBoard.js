@@ -1,8 +1,8 @@
-import React from 'react'
+import React from 'react';
 
-export default function ScoreBoard({score, highScore}) {
+export default function ScoreBoard({score, highscore}) {
     return (<div id="score-board">
-        <div id="highscore-text" className="scoreText">{highScore}</div>
+        <div id="highscore-text" className="scoreText">{highscore}</div>
         <div id="score-text" className="scoreText">{score}</div>
-    </div>)
+    </div>);
 }

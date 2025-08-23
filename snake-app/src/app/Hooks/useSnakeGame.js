@@ -1,3 +1,5 @@
+'use client'
+
 import React, {useState, useEffect, useCallback} from 'react'
 
 const unitSize = 25;
@@ -14,7 +16,11 @@ export function useSnakeGame(tickSpeed) {
     const [dir, setDir] = useState({x: unitSize, y: 0});
     const [score, setScore] = useState(0);
     const [highscore, setHighscore] = useState(()=>{
-        return parseInt(localStorage.getItem("highscore"), 10) || 0;
+        if (typeof window !== "undefined") {
+            return parseInt(window.localStorage.getItem("highscore"), 10) || 0;
+        } else {
+            return 0;
+        }
     })
     const [running, setRunning] = useState(false);
 
@@ -74,29 +80,29 @@ export function useSnakeGame(tickSpeed) {
                 x: snake[0].x + dir.x,
                 y: snake[0].y + dir.y
             }
-        })
 
-        let ate = false;
-        if (head.x === food.x && head.y === food.y) {
-            setScore((s)=>s++);
-            ate = true;
-            createFood();
-        }
+            let ate = false;
+            if (head.x === food.x && head.y === food.y) {
+                setScore((s)=>s++);
+                ate = true;
+                createFood();
+            }
 
-        const newSnake = [head, ...snake];
-        if (!ate) newSnake.pop();
-        setSnake(newSnake);
+            const newSnake = [head, ...snake];
+            if (!ate) newSnake.pop();
+            setSnake(newSnake);
 
-        setHighscore((hs)=>{
-            const updated = Math.max(hs, score + ate ? 1 : 0);
-            localStorage.setItem("highscore", updated);
-            return updated;
-        });
+            setHighscore((hs)=>{
+                const updated = Math.max(hs, score + ate ? 1 : 0);
+                window.localStorage.setItem("highscore", updated);
+                return updated;
+            });
 
-        const hitWall = head.x < 0 || head.y < 0 || head.x >= canvasSize || head.y >= canvasSize;
-        const hitSelf = newSnake.slice(1).some(seg => seg.x === head.x && seg.y === head.y);
+            const hitWall = head.x < 0 || head.y < 0 || head.x >= canvasSize || head.y >= canvasSize;
+            const hitSelf = newSnake.slice(1).some(seg => seg.x === head.x && seg.y === head.y);
 
-        if (hitWall || hitSelf) setRunning(false);
+            if (hitWall || hitSelf) setRunning(false);
+        }, tickSpeed)
 
         return () => clearTimeout(id);
     }, [snake, dir, running, tickSpeed, food, score, createFood]);
