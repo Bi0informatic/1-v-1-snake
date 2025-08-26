@@ -80,3 +80,38 @@ body {
     height: 4rem;
     background-color: rgb(253, 108, 108);
 }
+
+#open-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: grey;
+}
+
+.open-button {
+    /*
+    position: absolute;
+    top: calc(50vh - 100px);
+    left: calc(50vw - 150px);
+    width: 150px;
+    */
+    display: block;
+    width: 150px;
+    margin: auto;
+    margin-top: 5rem;
+}
+
+.open-button:last-of-type {
+    margin-top: 0.5rem;
+}
+
+#open-header {
+    font-size: 64px;
+    margin: 7rem;
+}
+
+.hidden {
+    display: none;
+}

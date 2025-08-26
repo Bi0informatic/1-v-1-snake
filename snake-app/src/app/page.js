@@ -5,6 +5,7 @@ import { useSnakeGame } from './Hooks/useSnakeGame.js';
 import ScoreBoard from "./components/ScoreBoard.js";
 import Controls from "./components/Controls.js";
 import GameCanvas from "./components/GameCanvas.js";
+import OpenScreen from './components/OpenScreen.js';
 
 export default function App() {
   const [tickSpeed, setTickSpeed] = useState(80);
@@ -15,7 +16,8 @@ export default function App() {
     highscore,
     running,
     startGame,
-    resetHighscore
+    resetHighscore,
+    hideElement
   } = useSnakeGame(tickSpeed);
 
   return (
@@ -23,5 +25,6 @@ export default function App() {
       <ScoreBoard score={score} highscore={highscore}/>
       <GameCanvas snake={snake} food={food} running={running}/>
       <Controls onRestart={startGame} onSetSpeed={setTickSpeed} onResetHighscore={resetHighscore}/>
+      <OpenScreen onHide={hideElement}/>
     </div>);
 }
