@@ -122,8 +122,6 @@ export function useSnakeGame(tickSpeed) {
                     }
                     return newS;
                 });  
-                console.log("score: " + score); 
-                console.log("highscore: " + highscore);   
                 ate = true;
                 createFood();
             }
