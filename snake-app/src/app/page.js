@@ -7,7 +7,7 @@ import Controls from "./components/Controls.js";
 import GameCanvas from "./components/GameCanvas.js";
 
 export default function App() {
-  const [tickSpeed, setTickSpeed] = useState(90);
+  const [tickSpeed, setTickSpeed] = useState(80);
   const {
     snake,
     food, 
