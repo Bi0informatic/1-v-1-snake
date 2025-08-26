@@ -14,13 +14,14 @@ export default function App() {
     score,
     highscore,
     running,
-    startGame
+    startGame,
+    resetHighscore
   } = useSnakeGame(tickSpeed);
 
   return (
     <div id="container">
       <ScoreBoard score={score} highscore={highscore}/>
       <GameCanvas snake={snake} food={food} running={running}/>
-      <Controls onRestart={startGame} onSetSpeed={setTickSpeed}/>
+      <Controls onRestart={startGame} onSetSpeed={setTickSpeed} onResetHighscore={resetHighscore}/>
     </div>);
 }

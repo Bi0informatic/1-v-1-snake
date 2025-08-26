@@ -65,3 +65,11 @@ body {
 #highscore-text::before {
     content: "HIGHSCORE: "
 }
+
+#reset-highscore-button {
+    position: absolute;
+    top: 10;
+    left: 10;
+    height: 4rem;
+    background-color: rgb(253, 108, 108);
+}

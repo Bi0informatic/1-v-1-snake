@@ -43,6 +43,10 @@ export function useSnakeGame(tickSpeed) {
         setRunning(true);
     }, [createFood]);
 
+    const resetHighscore = useCallback(()=>{
+        setHighscore(0);
+    })
+
     useEffect(()=>{
         const handleKey = (e) => {
             switch (e.code) {
