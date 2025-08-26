@@ -41,8 +41,15 @@ body {
 }
 
 #restart-button {
-    background-color:#EE90EE;
     margin-top: 1rem;
+}
+
+.start {
+    background-color: #29e429;
+}
+
+.restart {
+    background-color: #EE90EE;
 }
 
 #restart-button:hover {

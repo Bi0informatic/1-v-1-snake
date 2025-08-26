@@ -34,11 +34,17 @@ export function useSnakeGame(tickSpeed) {
     },[]);
 
     const startGame = useCallback(()=>{
+        const restartButton = document.getElementById("restart-button");
         setSnake(initialSnake);
         setDir({x: unitSize, y: 0});
         setScore(0);
         createFood();
         setRunning(true);
+        if (restartButton.classList.contains("start")) {
+            restartButton.classList.remove("start");
+            restartButton.textContent = "Restart";
+            restartButton.classList.add("restart");
+        }
     }, [createFood]);
 
     const resetHighscore = useCallback(()=>{
