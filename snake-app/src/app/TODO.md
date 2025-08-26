@@ -1,3 +1,3 @@
 // TODO
 
-! fix problem where highscore does not update
+! make first reload of page make the reset button called start button

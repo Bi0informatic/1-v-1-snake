@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useState, useEffect, useCallback} from 'react'
+import React, {useState, useEffect, useCallback, useLayoutEffect} from 'react'
 
 const unitSize = 25;
 const canvasSize = 500;
@@ -15,13 +15,7 @@ export function useSnakeGame(tickSpeed) {
     const [food, setFood] = useState({x: 0, y:0});
     const [dir, setDir] = useState({x: unitSize, y: 0});
     const [score, setScore] = useState(0);
-    const [highscore, setHighscore] = useState(()=>{
-        if (typeof window !== "undefined") {
-            return parseInt(window.localStorage.getItem("highscore"), 10) || 0;
-        } else {
-            return 0;
-        }
-    })
+    const [highscore, setHighscore] = useState(0);
     const [running, setRunning] = useState(false);
 
     const createFood = useCallback(()=>{
@@ -35,6 +29,10 @@ export function useSnakeGame(tickSpeed) {
         setFood({x: foodLocation.x, y: foodLocation.y});
     }, [snake]);
 
+    useLayoutEffect(()=>{
+        setHighscore(window.localStorage.getItem("highscore"));
+    },[]);
+
     const startGame = useCallback(()=>{
         setSnake(initialSnake);
         setDir({x: unitSize, y: 0});
@@ -45,7 +43,8 @@ export function useSnakeGame(tickSpeed) {
 
     const resetHighscore = useCallback(()=>{
         setHighscore(0);
-    })
+        window.localStorage.setItem("highscore", 0);
+    }, []);
 
     useEffect(()=>{
         const handleKey = (e) => {
@@ -111,9 +110,20 @@ export function useSnakeGame(tickSpeed) {
                 y: snake[0].y + dir.y
             }
 
+            
+
             let ate = false;
             if (head.x === food.x && head.y === food.y) {
-                setScore((s)=>s + 1);
+                setScore((s)=>{
+                    const newS = s + 1;
+                    if (newS > highscore) {
+                        setHighscore(newS);
+                        window.localStorage.setItem("highscore", newS);
+                    }
+                    return newS;
+                });  
+                console.log("score: " + score); 
+                console.log("highscore: " + highscore);   
                 ate = true;
                 createFood();
             }
@@ -121,12 +131,7 @@ export function useSnakeGame(tickSpeed) {
             const newSnake = [head, ...snake];
             if (!ate) newSnake.pop();
             setSnake(newSnake);
-
-            setHighscore((hs)=>{
-                const updated = Math.max(hs, score + ate ? 1 : 0);
-                window.localStorage.setItem("highscore", updated);
-                return updated;
-            });
+            
 
             const hitWall = head.x < 0 || head.y < 0 || head.x >= canvasSize || head.y >= canvasSize;
             const hitSelf = newSnake.slice(1).some(seg => seg.x === head.x && seg.y === head.y);
@@ -135,15 +140,7 @@ export function useSnakeGame(tickSpeed) {
         }, tickSpeed)
 
         return () => clearTimeout(id);
-    }, [snake, dir, running, tickSpeed, food, score, createFood]);
-
-    useEffect(()=>{
-        if (!running) return;
-        const id = setTimeout(()=>{
-            console.log(food);
-            return () => clearTimeout(id)
-        }, 2000)
-    })
+    }, [snake, dir, running, tickSpeed, food, score, highscore, createFood]);
 
     return  {
         snake, 
@@ -153,6 +150,7 @@ export function useSnakeGame(tickSpeed) {
         running,
         startGame,
         setTickSpeed: ()=>{},
+        resetHighscore,
         setRunning,
         setDir
     }

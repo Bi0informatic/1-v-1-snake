@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Controls({onRestart, onSetSpeed}) {
+export default function Controls({onRestart, onSetSpeed, onResetHighscore}) {
     return (<div id="control-buttons">
         <button id="restart-button" className="button" onClick={onRestart}>Restart</button>
         <button id="easy-button" className="difficulty button" onClick={()=>{onSetSpeed(100); onRestart();}}>Easy</button>
