@@ -26,7 +26,7 @@ export default function GameCanvas({snake, food, running}) {
             ctx.textAlign = "center";
             ctx.fillText("GAME OVER!", canvasSize/2, canvasSize/2);
         }
-    });
+    }, [snake, food, running]);
 
     return <canvas id="game-canvas" ref={canvasRef} width={canvasSize} height={canvasSize}>Your browser does not support the HTML5 canvas tag.</canvas>;
 }

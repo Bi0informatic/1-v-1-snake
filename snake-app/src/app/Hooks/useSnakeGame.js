@@ -50,40 +50,24 @@ export function useSnakeGame(tickSpeed) {
         const handleKey = (e) => {
             switch (e.code) {
                 case "ArrowLeft" :
-                    if (dir.x === 0) {
-                        setDir({x: -unitSize, y: 0});
-                    }
-                    break;
                 case "KeyA" :
                     if (dir.x === 0) {
                         setDir({x: -unitSize, y: 0});
                     }
                     break;
                 case "ArrowUp":
-                    if (dir.y === 0) {
-                        setDir({x: 0, y: -unitSize});
-                    }
-                    break;
                 case "KeyW":
                     if (dir.y === 0) {
                         setDir({x: 0, y: -unitSize});
                     }
                     break;
                 case "ArrowRight":
-                    if (dir.x === 0) {
-                        setDir({x: unitSize, y: 0});
-                    }
-                    break;
                 case "KeyD":
                     if (dir.x === 0) {
                         setDir({x: unitSize, y: 0});
                     }
                     break;
                 case "ArrowDown":
-                    if (dir.y === 0) {
-                        setDir({x: 0, y: unitSize});
-                    }
-                    break;
                 case "KeyS":
                     if (dir.y === 0) {
                         setDir({x: 0, y: unitSize});
