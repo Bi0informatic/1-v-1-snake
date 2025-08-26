@@ -25,9 +25,15 @@ export function useSnakeGame(tickSpeed) {
     const [running, setRunning] = useState(false);
 
     const createFood = useCallback(()=>{
-        const rand = (max) => Math.round((Math.random() * max) / unitSize) * unitSize;
-        setFood({x: rand(canvasSize), y: rand(canvasSize)});
-    }, []);
+    const rand = (max) => {
+        return Math.round((Math.random() * max) / unitSize) * unitSize;
+    };
+    let foodLocation = {x: rand(canvasSize - unitSize), y: rand(canvasSize - unitSize)};
+    while (snake.some(seg => seg.x == foodLocation.x && seg.y == foodLocation.y)) {
+        foodLocation = {x: rand(canvasSize - unitSize), y: rand(canvasSize - unitSize)};
+    }
+        setFood({x: foodLocation.x, y: foodLocation.y});
+    }, [snake]);
 
     const startGame = useCallback(()=>{
         setSnake(initialSnake);
