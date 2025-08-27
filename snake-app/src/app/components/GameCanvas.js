@@ -8,6 +8,12 @@ const snakeBorder = "black";
 const foodColor = "red";
 const unitSize = 25;
 const canvasSize = 500;
+const initialSnake = [
+    {x:unitSize * 2, y: unitSize * 10},
+    {x:unitSize, y: unitSize * 10},
+    {x:0, y: unitSize * 10},
+];
+const initialFood = {x: 0, y: 0};
 
 export default function GameCanvas({snake, food, running}) {
     const canvasRef = useRef(null);
@@ -19,8 +25,16 @@ export default function GameCanvas({snake, food, running}) {
         drawFood(ctx, food);
         drawSnake(ctx, snake);
 
+        const initialState = snake.every((seg, index)=>{
+            return seg.x == initialSnake[index].x && seg.y == initialSnake[index].y && food.x == initialFood.x && food.y == initialFood.y;
+        })
 
-        if (!running) {
+        if (!running && initialState) {
+            ctx.font = "50px Times New Roman";
+            ctx.fillStyle = "black";
+            ctx.textAlign = "center";
+            ctx.fillText("PRESS START!", canvasSize/2, canvasSize/2);
+        } else if (!running) {
             ctx.font = "50px Times New Roman";
             ctx.fillStyle = "black";
             ctx.textAlign = "center";

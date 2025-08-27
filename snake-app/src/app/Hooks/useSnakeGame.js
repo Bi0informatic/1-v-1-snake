@@ -133,7 +133,7 @@ export function useSnakeGame(tickSpeed) {
     const hideElement = useCallback(()=> {
         const openingScreen = document.getElementById("open-screen");
         openingScreen.classList.add("hidden");
-    })
+    }, []);
 
     return  {
         snake, 
