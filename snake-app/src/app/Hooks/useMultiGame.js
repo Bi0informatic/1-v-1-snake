@@ -4,14 +4,20 @@ import React, {useState, useEffect, useCallback, useLayoutEffect} from 'react'
 
 const unitSize = 25;
 const canvasSize = 500;
-const initialSnake = [
+const initialSnake1 = [
     {x:unitSize * 2, y: unitSize * 10},
     {x:unitSize, y: unitSize * 10},
     {x:0, y: unitSize * 10},
 ];
+const initialSnake2 = [
+    {x:unitSize * 17, y: unitSize * 10},
+    {x:unitSize * 18, y: unitSize * 10},
+    {x:unitSize * 19, y: unitSize * 10},
+];
 
-export function useSnakeGame(tickSpeed) {
-    const [snake1, setSnake1] = useState(initialSnake);
+export function useMultiGame(tickSpeed) {
+    const [snake1, setSnake1] = useState(initialSnake1);
+    const [snake2, setSnake2] = useState(initialSnake2)
     const [food, setFood] = useState({x: 0, y:0});
     const [dir, setDir] = useState({x: unitSize, y: 0});
     const [score, setScore] = useState(0);
@@ -35,7 +41,8 @@ export function useSnakeGame(tickSpeed) {
 
     const startGame = useCallback(()=>{
         const restartButton = document.getElementById("restart-button");
-        setSnake1(initialSnake);
+        setSnake1(initialSnake1);
+        setSnake2(initialSnake2);
         setDir({x: unitSize, y: 0});
         setScore(0);
         createFood();
@@ -132,6 +139,7 @@ export function useSnakeGame(tickSpeed) {
 
     return  {
         snake1, 
+        snake2,
         food, 
         score,
         highscore,

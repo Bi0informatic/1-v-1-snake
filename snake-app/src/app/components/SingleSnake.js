@@ -9,7 +9,7 @@ import Controls from './Controls.js';
 export default function SingleSnake({onSelectMode}) {
   const [tickSpeed, setTickSpeed] = useState(80);
   const {
-    snake,
+    snake1,
     food, 
     score,
     highscore,
@@ -21,7 +21,7 @@ export default function SingleSnake({onSelectMode}) {
   return (
     <div id="container">
       <ScoreBoard score={score} highscore={highscore}/>
-      <GameCanvas snake={snake} food={food} running={running}/>
+      <GameCanvas snake1={snake1} snake2={null} food={food} running={running}/>
       <Controls onRestart={startGame} onSetSpeed={setTickSpeed} onResetHighscore={resetHighscore} onSelectMode={onSelectMode}/>
     </div>);
 }
