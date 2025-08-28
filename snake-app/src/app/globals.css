@@ -76,9 +76,16 @@ body {
 #reset-highscore-button {
     position: absolute;
     top: 10;
-    left: 10;
+    left: 8rem;
     height: 4rem;
     background-color: rgb(253, 108, 108);
+}
+
+#menu-button {
+    position: absolute;
+    top: 10;
+    left: 10;
+    height: 4rem;
 }
 
 #open-screen {
@@ -112,6 +119,10 @@ body {
     margin: 7rem;
 }
 
-.hidden {
-    display: none;
+#open-screen {
+    z-index: 99;
+}
+
+#game-handler {
+    text-align: center;
 }

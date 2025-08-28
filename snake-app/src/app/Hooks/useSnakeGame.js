@@ -130,11 +130,6 @@ export function useSnakeGame(tickSpeed) {
         return () => clearTimeout(id);
     }, [snake, dir, running, tickSpeed, food, score, highscore, createFood]);
 
-    const hideElement = useCallback(()=> {
-        const openingScreen = document.getElementById("open-screen");
-        openingScreen.classList.add("hidden");
-    }, []);
-
     return  {
         snake, 
         food, 
@@ -144,7 +139,6 @@ export function useSnakeGame(tickSpeed) {
         startGame,
         setTickSpeed: ()=>{},
         resetHighscore,
-        hideElement,
         setRunning,
         setDir
     }
