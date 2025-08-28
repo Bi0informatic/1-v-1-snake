@@ -1,30 +1,13 @@
 'use client'
 
-import React, {useState} from 'react'
-import { useSnakeGame } from './Hooks/useSnakeGame.js';
-import ScoreBoard from "./components/ScoreBoard.js";
-import Controls from "./components/Controls.js";
-import GameCanvas from "./components/GameCanvas.js";
-import OpenScreen from './components/OpenScreen.js';
+import SnakeManager from "./components/SnakeManager";
+import React from "react";
 
 export default function App() {
-  const [tickSpeed, setTickSpeed] = useState(80);
-  const {
-    snake,
-    food, 
-    score,
-    highscore,
-    running,
-    startGame,
-    resetHighscore,
-    hideElement
-  } = useSnakeGame(tickSpeed);
-
   return (
-    <div id="container">
-      <ScoreBoard score={score} highscore={highscore}/>
-      <GameCanvas snake={snake} food={food} running={running}/>
-      <Controls onRestart={startGame} onSetSpeed={setTickSpeed} onResetHighscore={resetHighscore}/>
-      <OpenScreen onHide={hideElement}/>
-    </div>);
+    <React.Fragment>
+      <SnakeManager/>
+    </React.Fragment>
+  )
+    
 }

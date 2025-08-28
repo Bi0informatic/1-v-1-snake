@@ -1,3 +1,8 @@
 // TODO
 
-! make first reload of page make the reset button called start button
+Multiplayer:
+! create a local multiplayer
+
+
+
+!! create server then host an online multiplayer
