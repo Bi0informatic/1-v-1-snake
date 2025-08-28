@@ -20,7 +20,8 @@ export function useMultiGame(tickSpeed) {
     const [snake2, setSnake2] = useState(initialSnake2)
     const [food1, setFood1] = useState({x: 0, y: 0});
     const [food2, setFood2] = useState ({x: 0, y: 0});
-    const [dir, setDir] = useState({x: unitSize, y: 0});
+    const [dir1, setDir1] = useState({x: unitSize, y: 0});
+    const [dir2, setDir2] = useState({x: -unitSize, y: 0});
     const [score, setScore] = useState(0);
     const [highscore, setHighscore] = useState(0);
     const [running, setRunning] = useState(false);
@@ -38,7 +39,7 @@ export function useMultiGame(tickSpeed) {
         const restartButton = document.getElementById("restart-button");
         setSnake1(initialSnake1);
         setSnake2(initialSnake2);
-        setDir({x: unitSize, y: 0});
+        setDir1({x: unitSize, y: 0});
         setScore(0);
         createFood();
         setRunning(true);
@@ -55,51 +56,30 @@ export function useMultiGame(tickSpeed) {
     }, []);
 
     useEffect(()=>{
-        const handleKey = (e) => {
-            switch (e.code) {
-                case "ArrowLeft" :
-                case "KeyA" :
-                    if (dir.x === 0) {
-                        setDir({x: -unitSize, y: 0});
-                    }
-                    break;
-                case "ArrowUp":
-                case "KeyW":
-                    if (dir.y === 0) {
-                        setDir({x: 0, y: -unitSize});
-                    }
-                    break;
-                case "ArrowRight":
-                case "KeyD":
-                    if (dir.x === 0) {
-                        setDir({x: unitSize, y: 0});
-                    }
-                    break;
-                case "ArrowDown":
-                case "KeyS":
-                    if (dir.y === 0) {
-                        setDir({x: 0, y: unitSize});
-                    }
-                    break;
-                case "space":
-                    startGame();
-                    break;
-                default:
-                    break;
-            }
+        const handleKey1 = (e) => {
+            changeDirection(e, "KeyA", "KeyW", "KeyD", "KeyS", dir1, setDir1);
         }
 
-        window.addEventListener("keydown", handleKey);
-        return () => window.removeEventListener("keydown", handleKey);
-    }, [dir, startGame]);
+        window.addEventListener("keydown", handleKey1);
+        return () => window.removeEventListener("keydown", handleKey1);
+    }, [dir1, startGame]);
+
+    useEffect(()=>{
+        const handleKey2 = (e) => {
+            changeDirection(e, "ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown", dir2, setDir2);
+        }
+
+        window.addEventListener("keydown", handleKey2);
+        return () => window.removeEventListener("keydown", handleKey2);
+    }, [dir2, startGame]);
 
     useEffect(()=>{
         if (!running) return;
 
         const id = setTimeout(()=> {
             const head = {
-                x: snake1[0].x + dir.x,
-                y: snake1[0].y + dir.y
+                x: snake1[0].x + dir1.x,
+                y: snake1[0].y + dir1.y
             }
 
             
@@ -130,7 +110,7 @@ export function useMultiGame(tickSpeed) {
         }, tickSpeed)
 
         return () => clearTimeout(id);
-    }, [snake1, snake2, dir, running, tickSpeed, food1, food2, score, highscore, createFood]);
+    }, [snake1, snake2, dir1, running, tickSpeed, food1, food2, score, highscore, createFood]);
 
     return  {
         snake1, 
@@ -144,7 +124,6 @@ export function useMultiGame(tickSpeed) {
         setTickSpeed: ()=>{},
         resetHighscore,
         setRunning,
-        setDir
     }
 }
 
@@ -159,3 +138,32 @@ function setFoodLocation(setFood, snake1, snake2) {
     }
     setFood({x: foodLocation.x, y: foodLocation.y});
 }
+
+function changeDirection(e, left, up, right, down, dir, setDir) {
+    switch (e.code) {
+        case left :
+            if (dir.x === 0) {
+                setDir({x: -unitSize, y: 0});
+            }
+            break;
+        case up:
+            if (dir.y === 0) {
+                setDir({x: 0, y: -unitSize});
+            }
+            break;
+        case right:
+            if (dir.x === 0) {
+                setDir({x: unitSize, y: 0});
+            }
+            break;
+        case down:
+            if (dir.y === 0) {
+                setDir({x: 0, y: unitSize});
+            }
+            break;
+        case "space":
+            startGame();
+            break;
+        default:
+            break;
+}} 

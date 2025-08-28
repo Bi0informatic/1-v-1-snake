@@ -139,7 +139,6 @@ export function useSnakeGame(tickSpeed) {
         startGame,
         setTickSpeed: ()=>{},
         resetHighscore,
-        setRunning,
-        setDir
+        setRunning
     }
 }
