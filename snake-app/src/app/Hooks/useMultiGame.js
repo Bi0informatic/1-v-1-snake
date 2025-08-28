@@ -26,14 +26,8 @@ export function useMultiGame(tickSpeed) {
     const [running, setRunning] = useState(false);
 
     const createFood = useCallback(()=>{
-        const rand = (max) => {
-            return Math.round((Math.random() * max) / unitSize) * unitSize;
-        };
-        let foodLocation = {x: rand(canvasSize - unitSize), y: rand(canvasSize - unitSize)};
-        while (snake1.some(seg => seg.x == foodLocation.x && seg.y == foodLocation.y) && snake2.some(seg => seg.x == foodLocation.x && seg.y == foodLocation.y)) {
-            foodLocation = {x: rand(canvasSize - unitSize), y: rand(canvasSize - unitSize)};
-        }
-            setFood1({x: foodLocation.x, y: foodLocation.y});
+        setFoodLocation(setFood1, snake1, snake2);
+        setFoodLocation(setFood2, snake1, snake2) 
         }, [snake1, snake2]);
 
         useLayoutEffect(()=>{
@@ -111,7 +105,7 @@ export function useMultiGame(tickSpeed) {
             
 
             let ate = false;
-            if (head.x === food1.x && head.y === food1.y) {
+            if (head.x === food1.x && head.y === food1.y || head.x === food2.x && head.y === food2.y) {
                 setScore((s)=>{
                     const newS = s + 1;
                     if (newS > highscore) {
@@ -136,7 +130,7 @@ export function useMultiGame(tickSpeed) {
         }, tickSpeed)
 
         return () => clearTimeout(id);
-    }, [snake1, dir, running, tickSpeed, food1, score, highscore, createFood]);
+    }, [snake1, snake2, dir, running, tickSpeed, food1, food2, score, highscore, createFood]);
 
     return  {
         snake1, 
@@ -152,4 +146,16 @@ export function useMultiGame(tickSpeed) {
         setRunning,
         setDir
     }
+}
+
+
+function setFoodLocation(setFood, snake1, snake2) {
+    const rand = (max) => {
+            return Math.round((Math.random() * max) / unitSize) * unitSize;
+        };
+    let foodLocation = {x: rand(canvasSize - unitSize), y: rand(canvasSize - unitSize)};
+    while (snake1.some(seg => seg.x == foodLocation.x && seg.y == foodLocation.y) && snake2.some(seg => seg.x == foodLocation.x && seg.y == foodLocation.y)) {
+        foodLocation = {x: rand(canvasSize - unitSize), y: rand(canvasSize - unitSize)};
+    }
+    setFood({x: foodLocation.x, y: foodLocation.y});
 }
