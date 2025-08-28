@@ -18,26 +18,27 @@ const initialSnake2 = [
 export function useMultiGame(tickSpeed) {
     const [snake1, setSnake1] = useState(initialSnake1);
     const [snake2, setSnake2] = useState(initialSnake2)
-    const [food, setFood] = useState({x: 0, y:0});
+    const [food1, setFood1] = useState({x: 0, y: 0});
+    const [food2, setFood2] = useState ({x: 0, y: 0});
     const [dir, setDir] = useState({x: unitSize, y: 0});
     const [score, setScore] = useState(0);
     const [highscore, setHighscore] = useState(0);
     const [running, setRunning] = useState(false);
 
     const createFood = useCallback(()=>{
-    const rand = (max) => {
-        return Math.round((Math.random() * max) / unitSize) * unitSize;
-    };
-    let foodLocation = {x: rand(canvasSize - unitSize), y: rand(canvasSize - unitSize)};
-    while (snake1.some(seg => seg.x == foodLocation.x && seg.y == foodLocation.y)) {
-        foodLocation = {x: rand(canvasSize - unitSize), y: rand(canvasSize - unitSize)};
-    }
-        setFood({x: foodLocation.x, y: foodLocation.y});
-    }, [snake1]);
+        const rand = (max) => {
+            return Math.round((Math.random() * max) / unitSize) * unitSize;
+        };
+        let foodLocation = {x: rand(canvasSize - unitSize), y: rand(canvasSize - unitSize)};
+        while (snake1.some(seg => seg.x == foodLocation.x && seg.y == foodLocation.y) && snake2.some(seg => seg.x == foodLocation.x && seg.y == foodLocation.y)) {
+            foodLocation = {x: rand(canvasSize - unitSize), y: rand(canvasSize - unitSize)};
+        }
+            setFood1({x: foodLocation.x, y: foodLocation.y});
+        }, [snake1, snake2]);
 
-    useLayoutEffect(()=>{
-        setHighscore(window.localStorage.getItem("highscore"));
-    },[]);
+        useLayoutEffect(()=>{
+            setHighscore(window.localStorage.getItem("highscore"));
+        },[]);
 
     const startGame = useCallback(()=>{
         const restartButton = document.getElementById("restart-button");
@@ -110,7 +111,7 @@ export function useMultiGame(tickSpeed) {
             
 
             let ate = false;
-            if (head.x === food.x && head.y === food.y) {
+            if (head.x === food1.x && head.y === food1.y) {
                 setScore((s)=>{
                     const newS = s + 1;
                     if (newS > highscore) {
@@ -135,12 +136,13 @@ export function useMultiGame(tickSpeed) {
         }, tickSpeed)
 
         return () => clearTimeout(id);
-    }, [snake1, dir, running, tickSpeed, food, score, highscore, createFood]);
+    }, [snake1, dir, running, tickSpeed, food1, score, highscore, createFood]);
 
     return  {
         snake1, 
         snake2,
-        food, 
+        food1,
+        food2, 
         score,
         highscore,
         running,

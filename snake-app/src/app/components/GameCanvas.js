@@ -15,19 +15,23 @@ const initialSnake = [
 ];
 const initialFood = {x: 0, y: 0};
 
-export default function GameCanvas({snake1, snake2, food, running}) {
+export default function GameCanvas({snake1, snake2, food1, food2, running}) {
     const canvasRef = useRef(null);
 
     useEffect(() => {
         const ctx = canvasRef.current.getContext("2d");
 
         drawBackground(ctx);
-        drawFood(ctx, food);
+
+        drawFood(ctx, food1);
+        if (snake2) {
+            drawFood(ctx, food2);
+        }
         drawSnake(ctx, snake1);
         if (snake2) drawSnake(ctx, snake2);
 
         const initialState = snake1.every((seg, index)=>{
-            return seg.x == initialSnake[index].x && seg.y == initialSnake[index].y && food.x == initialFood.x && food.y == initialFood.y;
+            return seg.x == initialSnake[index].x && seg.y == initialSnake[index].y && food1.x == initialFood.x && food1.y == initialFood.y;
         })
 
         if (!running && initialState) {
@@ -41,7 +45,7 @@ export default function GameCanvas({snake1, snake2, food, running}) {
             ctx.textAlign = "center";
             ctx.fillText("GAME OVER!", canvasSize/2, canvasSize/2);
         }
-    }, [snake1, food, running]);
+    }, [snake1, snake2, food1, food2, running]);
 
     return <canvas id="game-canvas" ref={canvasRef} width={canvasSize} height={canvasSize}>Your browser does not support the HTML5 canvas tag.</canvas>;
 }

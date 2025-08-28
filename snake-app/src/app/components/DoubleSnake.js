@@ -11,7 +11,8 @@ export default function DoubleSnake({onSelectMode}) {
       const {
         snake1,
         snake2,
-        food, 
+        food1,
+        food2, 
         score,
         highscore,
         running,
@@ -22,7 +23,7 @@ export default function DoubleSnake({onSelectMode}) {
       return (
         <div id="container">
           <ScoreBoard score={score} highscore={highscore}/>
-          <GameCanvas snake1={snake1} snake2={snake2} food={food} running={running}/>
+          <GameCanvas snake1={snake1} snake2={snake2} food1={food1} food2={food2} running={running}/>
           <Controls onRestart={startGame} onSetSpeed={setTickSpeed} onResetHighscore={resetHighscore} onSelectMode={onSelectMode}/>
         </div>);
 }

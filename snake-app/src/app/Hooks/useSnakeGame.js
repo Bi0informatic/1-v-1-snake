@@ -12,7 +12,7 @@ const initialSnake = [
 
 export function useSnakeGame(tickSpeed) {
     const [snake1, setSnake1] = useState(initialSnake);
-    const [food, setFood] = useState({x: 0, y:0});
+    const [food1, setFood1] = useState({x: 0, y:0});
     const [dir, setDir] = useState({x: unitSize, y: 0});
     const [score, setScore] = useState(0);
     const [highscore, setHighscore] = useState(0);
@@ -26,7 +26,7 @@ export function useSnakeGame(tickSpeed) {
     while (snake1.some(seg => seg.x == foodLocation.x && seg.y == foodLocation.y)) {
         foodLocation = {x: rand(canvasSize - unitSize), y: rand(canvasSize - unitSize)};
     }
-        setFood({x: foodLocation.x, y: foodLocation.y});
+        setFood1({x: foodLocation.x, y: foodLocation.y});
     }, [snake1]);
 
     useLayoutEffect(()=>{
@@ -103,7 +103,7 @@ export function useSnakeGame(tickSpeed) {
             
 
             let ate = false;
-            if (head.x === food.x && head.y === food.y) {
+            if (head.x === food1.x && head.y === food1.y) {
                 setScore((s)=>{
                     const newS = s + 1;
                     if (newS > highscore) {
@@ -128,11 +128,11 @@ export function useSnakeGame(tickSpeed) {
         }, tickSpeed)
 
         return () => clearTimeout(id);
-    }, [snake1, dir, running, tickSpeed, food, score, highscore, createFood]);
+    }, [snake1, dir, running, tickSpeed, food1, score, highscore, createFood]);
 
     return  {
         snake1, 
-        food, 
+        food1, 
         score,
         highscore,
         running,
