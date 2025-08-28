@@ -40,6 +40,7 @@ export function useMultiGame(tickSpeed) {
         setSnake1(initialSnake1);
         setSnake2(initialSnake2);
         setDir1({x: unitSize, y: 0});
+        setDir2({x: -unitSize, y: 0});
         setScore(0);
         createFood();
         setRunning(true);
@@ -77,15 +78,19 @@ export function useMultiGame(tickSpeed) {
         if (!running) return;
 
         const id = setTimeout(()=> {
-            const head = {
+            const head1 = {
                 x: snake1[0].x + dir1.x,
                 y: snake1[0].y + dir1.y
             }
-
+            const head2 = {
+                x: snake2[0].x + dir2.x,
+                y: snake2[0].y + dir2.y
+            }
             
 
-            let ate = false;
-            if (head.x === food1.x && head.y === food1.y || head.x === food2.x && head.y === food2.y) {
+            let ate1 = false;
+            let ate2 = false;
+            if (head1.x === food1.x && head1.y === food1.y || head1.x === food2.x && head1.y === food2.y) {
                 setScore((s)=>{
                     const newS = s + 1;
                     if (newS > highscore) {
@@ -94,23 +99,42 @@ export function useMultiGame(tickSpeed) {
                     }
                     return newS;
                 });  
-                ate = true;
+                ate1 = true;
                 createFood();
             }
 
-            const newSnake = [head, ...snake1];
-            if (!ate) newSnake.pop();
-            setSnake1(newSnake);
+            if (head2.x === food1.x && head2.y === food1.y || head2.x === food2.x && head2.y === food2.y) {  
+                ate2 = true;
+                createFood();
+            }
+
+            const newSnake1 = [head1, ...snake1];
+            if (!ate1) newSnake1.pop();
+            setSnake1(newSnake1);
+
+            const newSnake2 = [head2, ...snake2];
+            if (!ate2) newSnake2.pop();
+            setSnake2(newSnake2);
             
 
-            const hitWall = head.x < 0 || head.y < 0 || head.x >= canvasSize || head.y >= canvasSize;
-            const hitSelf = newSnake.slice(1).some(seg => seg.x === head.x && seg.y === head.y);
+            const hitWall1 = head1.x < 0 || head1.y < 0 || head1.x >= canvasSize || head1.y >= canvasSize;
+            const hitSelf1 = newSnake1.slice(1).some(seg => seg.x === head1.x && seg.y === head1.y);
 
-            if (hitWall || hitSelf) setRunning(false);
+            if (hitWall1 || hitSelf1) setRunning(false);
+
+            const hitWall2 = head2.x < 0 || head2.y < 0 || head2.x >= canvasSize || head2.y >= canvasSize;
+            const hitSelf2 = newSnake2.slice(1).some(seg => seg.x === head2.x && seg.y === head2.y);
+
+            if (hitWall2 || hitSelf2) setRunning(false);
+
+            const hitOther = snake1.some(seg1=>snake2.some(seg2=>seg1.x===seg2.x && seg1.y===seg2.y));
+
+            if (hitOther) setRunning(false);
+
         }, tickSpeed)
 
         return () => clearTimeout(id);
-    }, [snake1, snake2, dir1, running, tickSpeed, food1, food2, score, highscore, createFood]);
+    }, [snake1, snake2, dir1, dir2, running, tickSpeed, food1, food2, score, highscore, createFood]);
 
     return  {
         snake1, 

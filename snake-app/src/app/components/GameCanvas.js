@@ -2,8 +2,9 @@
 
 import React, {useRef, useEffect} from 'react'
 
-const boardBackground = "#b7a148"
-const snakeColor = "#485eb7"
+const boardBackground = "#b7a148";
+const snakeColor1 = "#485eb7";
+const snakeColor2 = "yellow";
 const snakeBorder = "black";
 const foodColor = "red";
 const unitSize = 25;
@@ -27,8 +28,8 @@ export default function GameCanvas({snake1, snake2, food1, food2, running}) {
         if (snake2) {
             drawFood(ctx, food2);
         }
-        drawSnake(ctx, snake1);
-        if (snake2) drawSnake(ctx, snake2);
+        drawSnake(ctx, snake1, snakeColor1);
+        if (snake2) drawSnake(ctx, snake2, snakeColor2);
 
         const initialState = snake1.every((seg, index)=>{
             return seg.x == initialSnake[index].x && seg.y == initialSnake[index].y && food1.x == initialFood.x && food1.y == initialFood.y;
@@ -60,12 +61,12 @@ function drawFood(ctx, food) {
     ctx.fillRect(food.x, food.y, unitSize, unitSize);
 }
 
-function drawSnake(ctx, snake1) {
-    ctx.fillStyle = snakeColor;
+function drawSnake(ctx, snake, color) {
+    ctx.fillStyle = color;
     ctx.strokeBorder = snakeBorder;
 
-    for (let i = 0; i < snake1.length; i++) {
-        ctx.fillRect(snake1[i].x, snake1[i].y, unitSize, unitSize);
-        ctx.strokeRect(snake1[i].x, snake1[i].y, unitSize, unitSize);
+    for (let i = 0; i < snake.length; i++) {
+        ctx.fillRect(snake[i].x, snake[i].y, unitSize, unitSize);
+        ctx.strokeRect(snake[i].x, snake[i].y, unitSize, unitSize);
     }
 }
