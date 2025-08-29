@@ -26,6 +26,6 @@ export default class Client {
             if (err) {
                 console.log("Message failed", msg, err);
             }
-        });
+        })
     }
 }

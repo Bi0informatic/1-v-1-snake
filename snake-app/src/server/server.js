@@ -1,8 +1,8 @@
 const express = require("express");
 const socket = require("socket.io");
 
-const Session = require("./session");
-const Client = require("./client");
+const Session = require("./session").default;
+const Client = require("./client").default;
 require('dotenv').config();
 
 const CLIENT_LIMIT = 2;
@@ -14,20 +14,50 @@ const server = app.listen(port, ()=>console.log("Listening to requests on port: 
 // TODO: remember to change origin to restricted trusted domains
 const io = socket(server, { cors: {origin: '*'}});
 
-io.on("connect", socket => {
+io.on("connection", socket => {
     console.log("Connected to socket: ", socket.id);
+    const client = createClient(socket);
+
+    socket.on("message", msg => {
+        const data = JSON.parse(msg);
+
+        switch (data.type) {
+            case "create-session": {
+                const session = createSession();
+                session.join(client);
+                client.send({
+                    type: "session-created",
+                    id: session.id
+                });
+                break;
+            };
+            case "join-session": {
+                const session = getSession(data.id) || createSession(data.id);
+                if (session.clients.size === CLIENT_LIMIT) {
+                    const sessionNew = createSession();
+                    sessionNew.join(client);
+                    client.send({
+                        type: "session-created",
+                        id: sessionNew.id
+                    });
+                    break;
+                }
+                session.join(client);
+                broadcastSession(session);
+                break;
+            }
+            case "state-update":
+                client.broadcast(data);
+                break;
+            case "state-broadcast":
+                client.broadcast(data);
+                break;
+
+        }
+    });
 });
 
-socket.on("message", msg => {
-    const data = JSON.parse(msg);
 
-    switch (data.type) {
-        case "create-session": {
-            
-        };
-        break;
-    }
-});
 
 function createID(len = 6, chars ="abcdefghjkmnopqrstwxyz0123456789") {
     let id = "";
