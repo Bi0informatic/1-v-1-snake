@@ -87,6 +87,29 @@ export function useMultiGame(tickSpeed) {
                 y: snake2[0].y + dir2.y
             }
             
+            const hitWall1 = head1.x < 0 || head1.y < 0 || head1.x >= canvasSize || head1.y >= canvasSize;
+            const hitSelf1 = snake1.slice(1).some(seg => seg.x === head1.x && seg.y === head1.y);
+
+            if (hitWall1 || hitSelf1) {
+                setRunning(false);
+                return;
+            };
+
+            const hitWall2 = head2.x < 0 || head2.y < 0 || head2.x >= canvasSize || head2.y >= canvasSize;
+            const hitSelf2 = snake2.slice(1).some(seg => seg.x === head2.x && seg.y === head2.y);
+
+            if (hitWall2 || hitSelf2) {
+                setRunning(false);
+                return;
+            };
+
+            const hitOther1 = snake2.some(seg2=>head1.x === seg2.x && head1.y === seg2.y);
+            const hitOther2 = snake1.some(seg1=>head2.x === seg1.x && head2.y === seg1.y);
+
+            if (hitOther1 || hitOther2) {
+                setRunning(false);
+                return;
+            };
 
             let ate1 = false;
             let ate2 = false;
@@ -116,20 +139,6 @@ export function useMultiGame(tickSpeed) {
             if (!ate2) newSnake2.pop();
             setSnake2(newSnake2);
             
-
-            const hitWall1 = head1.x < 0 || head1.y < 0 || head1.x >= canvasSize || head1.y >= canvasSize;
-            const hitSelf1 = newSnake1.slice(1).some(seg => seg.x === head1.x && seg.y === head1.y);
-
-            if (hitWall1 || hitSelf1) setRunning(false);
-
-            const hitWall2 = head2.x < 0 || head2.y < 0 || head2.x >= canvasSize || head2.y >= canvasSize;
-            const hitSelf2 = newSnake2.slice(1).some(seg => seg.x === head2.x && seg.y === head2.y);
-
-            if (hitWall2 || hitSelf2) setRunning(false);
-
-            const hitOther = snake1.some(seg1=>snake2.some(seg2=>seg1.x===seg2.x && seg1.y===seg2.y));
-
-            if (hitOther) setRunning(false);
 
         }, tickSpeed)
 
