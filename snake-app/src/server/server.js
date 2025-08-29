@@ -1,38 +1,73 @@
 const express = require("express");
-const http = require("http");
-const {Server} = require("socket.io");
-const cors = require("cors");
+const socket = require("socket.io");
+
+const Session = require("./session");
+const Client = require("./client");
+require('dotenv').config();
+
+const CLIENT_LIMIT = 2;
+const port = process.env.PORT || 4000;
+const sessions = new Map();
 
 const app = express();
-const server = http.createServer(app);
-const io = new Server(server, {
-    cors: {
-        origin: "http://localhost:3000",
-        methods: ["GET", "POST"]
+const server = app.listen(port, ()=>console.log("Listening to requests on port: " + port));
+// TODO: remember to change origin to restricted trusted domains
+const io = socket(server, { cors: {origin: '*'}});
+
+io.on("connect", socket => {
+    console.log("Connected to socket: ", socket.id);
+});
+
+socket.on("message", msg => {
+    const data = JSON.parse(msg);
+
+    switch (data.type) {
+        case "create-session": {
+            
+        };
+        break;
     }
-})
-
-let messages = ["Server is running"];
-
-app.use(cors());
-
-app.get("/", (req, res) =>{
-    res.send(messages);
 });
 
-io.on("connection", (socket)=>{
-    console.log("User connected:", socket.id);
+function createID(len = 6, chars ="abcdefghjkmnopqrstwxyz0123456789") {
+    let id = "";
+    while (len--) {
+        id += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return id;
+}
+
+function createClient(conn, id = createID()) {
+    return new Client(conn, id);
+}
+
+function createSession(id = createID()) {
+    if (sessions.has(id)) {
+        throw new Error("Session ${id} already exists");
+    }
+
+    const session = new Session(id);
+    console.log("Creating session ", session);
+
+    sessions.set(id, session);
+    return session;
+}
+
+function getSession(id) {
+    return sessions.get(id);
+}
+
+function broadcastSession(session) {
+    if (!session) return;
     
-    socket.on("message", (data)=>{
-        console.log("Message received:", data);
-        messages.push(data);
+    const clients = [...session.clients];
+    clients.forEach(client => {
+        client.send({
+            type: "session-broadcast",
+            peers: {
+                you: client.id,
+                clients: clients.map(client=>client.id)
+            }
+        });
     });
-
-    socket.on("disconnect", ()=>{
-        console.log("User disconnected:", socket.id);
-    });
-});
-
-server.listen(4000, ()=>{
-    console.log(`Server listening on port 4000`);
-})
+}
