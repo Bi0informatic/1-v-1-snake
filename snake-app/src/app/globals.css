@@ -126,3 +126,17 @@ body {
 #game-handler {
     text-align: center;
 }
+
+.absolute {
+    display: absolute;
+    top: 1rem;
+    left: 1rem;
+    background-color: rgb(241, 189, 189);
+    width: calc(100vw - 1rem);
+    height: calc(100vh - 1rem);
+}
+
+.white {
+    background-color: white;
+    margin: 1rem;
+}

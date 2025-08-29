@@ -55,7 +55,7 @@ export function useMultiGame(tickSpeed) {
         setHighscore(0);
         window.localStorage.setItem("highscore", 0);
     }, []);
-
+    // assign snake1 controls
     useEffect(()=>{
         const handleKey1 = (e) => {
             changeDirection(e, "KeyA", "KeyW", "KeyD", "KeyS", dir1, setDir1);
@@ -64,7 +64,7 @@ export function useMultiGame(tickSpeed) {
         window.addEventListener("keydown", handleKey1);
         return () => window.removeEventListener("keydown", handleKey1);
     }, [dir1, startGame]);
-
+    // assign snake2 controls
     useEffect(()=>{
         const handleKey2 = (e) => {
             changeDirection(e, "ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown", dir2, setDir2);
