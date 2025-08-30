@@ -13,11 +13,11 @@ const app = express();
 const server = app.listen(port, ()=>console.log("Listening to requests on port: " + port));
 // TODO: remember to change origin to restricted trusted domains
 const io = socket(server, { cors: {origin: '*'}});
-
+// listener for server
 io.on("connection", socket => {
     console.log("Connected to socket: ", socket.id);
     const client = createClient(socket);
-
+    // listener for event: "message" for each client/socket
     socket.on("message", msg => {
         const data = JSON.parse(msg);
 
