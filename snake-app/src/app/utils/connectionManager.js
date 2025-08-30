@@ -88,7 +88,7 @@ export default class ConnectionManager {
         this.conn.send(msg);
     }
 
-    revieve(msg) {
+    recieve(msg) {
         const data = JSON.parse(msg);
         console.log("Recieved Message: ", data);
         switch (data.type) {
