@@ -10,10 +10,9 @@ const initialSnake = [
     {x:0, y: unitSize * 10},
 ];
 
-export function useOnlineGame(tickSpeed, oppSnake, food1GameState, food2GameState) {
+export function useOnlineGame(tickSpeed, oppSnake) {
     const [snake1, setSnake1] = useState(initialSnake);
-    const [food1, setFood1] = useState(food1GameState);
-    const [food2, setFood2] = useState(food2GameState);
+    const [food1, setFood1] = useState({x: 0, y:0});
     const [dir, setDir] = useState({x: unitSize, y: 0});
     
     const [score, setScore] = useState(0);
@@ -21,11 +20,16 @@ export function useOnlineGame(tickSpeed, oppSnake, food1GameState, food2GameStat
     const [running, setRunning] = useState(false);
 
     const createFood = useCallback(()=>{
-        const location1 = setFoodLocation(setFood1, snake1, oppSnake);
-        console.log("food1 is at ", location1);
-        const location2 = setFoodLocation(setFood2, snake1, oppSnake); 
-        console.log("food2 is at ", location2);
-        }, [snake1, oppSnake]);
+    const rand = (max) => {
+        return Math.round((Math.random() * max) / unitSize) * unitSize;
+    };
+    let foodLocation = {x: rand(canvasSize - unitSize), y: rand(canvasSize - unitSize)};
+    while (snake1.some(seg => seg.x == foodLocation.x && seg.y == foodLocation.y)) {
+        foodLocation = {x: rand(canvasSize - unitSize), y: rand(canvasSize - unitSize)};
+    }
+        setFood1({x: foodLocation.x, y: foodLocation.y});
+    }, [snake1]);
+
     useLayoutEffect(()=>{
         setHighscore(window.localStorage.getItem("highscore"));
     },[]);
@@ -92,21 +96,21 @@ export function useOnlineGame(tickSpeed, oppSnake, food1GameState, food2GameStat
         if (!running) return;
 
         const id = setTimeout(()=> {
-            const head1 = {
+            const head = {
                 x: snake1[0].x + dir.x,
                 y: snake1[0].y + dir.y
             }
 
-            const hitWall = head1.x < 0 || head1.y < 0 || head1.x >= canvasSize || head1.y >= canvasSize;
-            const hitSelf = snake1.slice(0).some(seg => seg.x === head1.x && seg.y === head1.y);
+            const hitWall = head.x < 0 || head.y < 0 || head.x >= canvasSize || head.y >= canvasSize;
+            const hitSelf = snake1.slice(0).some(seg => seg.x === head.x && seg.y === head.y);
 
             if (hitWall || hitSelf) {
                 setRunning(false)
                 return;
             };
 
-            let ate1 = false;
-            if (head1.x === food1.x && head1.y === food1.y || head1.x === food2.x && head1.y === food2.y) {
+            let ate = false;
+            if (head.x === food1.x && head.y === food1.y) {
                 setScore((s)=>{
                     const newS = s + 1;
                     if (newS > highscore) {
@@ -115,25 +119,24 @@ export function useOnlineGame(tickSpeed, oppSnake, food1GameState, food2GameStat
                     }
                     return newS;
                 });  
-                ate1 = true;
+                ate = true;
                 createFood();
             }
 
-            const newSnake1 = [head1, ...snake1];
-            if (!ate1) newSnake1.pop();
-            setSnake1(newSnake1);
+            const newSnake = [head, ...snake1];
+            if (!ate) newSnake.pop();
+            setSnake1(newSnake);
             
 
             
         }, tickSpeed)
 
         return () => clearTimeout(id);
-    }, [snake1, dir, running, tickSpeed, food1, food2, score, highscore, createFood]);
+    }, [snake1, dir, running, tickSpeed, food1, score, highscore, createFood]);
 
     return  {
         snake1, 
-        food1,
-        food2, 
+        food1, 
         score,
         highscore,
         running,
@@ -142,16 +145,4 @@ export function useOnlineGame(tickSpeed, oppSnake, food1GameState, food2GameStat
         resetHighscore,
         setRunning
     }
-}
-
-function setFoodLocation(setFood, snake1, oppSnake) {
-    const rand = (max) => {
-            return Math.round((Math.random() * max) / unitSize) * unitSize;
-        };
-    let foodLocation = {x: rand(canvasSize - unitSize), y: rand(canvasSize - unitSize)};
-    while (snake1.some(seg => seg.x == foodLocation.x && seg.y == foodLocation.y) && oppSnake.some(seg => seg.x == foodLocation.x && seg.y == foodLocation.y)) {
-        foodLocation = {x: rand(canvasSize - unitSize), y: rand(canvasSize - unitSize)};
-    }
-    setFood({x: foodLocation.x, y: foodLocation.y});
-    return {x: foodLocation.x, y: foodLocation.y};
 }

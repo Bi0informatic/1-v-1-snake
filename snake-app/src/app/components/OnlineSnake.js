@@ -25,7 +25,7 @@ export default function OnlineSnake({onSelectMode, connectionManager, players}) 
     running,
     startGame,
     resetHighscore,
-  } = useOnlineGame(tickSpeed, oppSnake, food1Temp, food2Temp);
+  } = useOnlineGame(tickSpeed, oppSnake);
   // sends running when running is changed :connectionManager must also be changed when adding emits
   useEffect(()=>{
     events.emit("running", running);
