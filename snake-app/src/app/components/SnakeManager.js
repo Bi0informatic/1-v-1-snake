@@ -2,8 +2,10 @@ import React from 'react';
 
 import ConnectionManager from '../utils/connectionManager';
 import Events from '../utils/events';
+import OnlineSnake from './OnlineSnake';
 
 export default class SnakeManager extends React.Component {
+    
 
     constructor() {
         super();
@@ -15,7 +17,7 @@ export default class SnakeManager extends React.Component {
     componentDidMount() {
         this.createPlayer();
         this.connectionManager = new ConnectionManager(this);
-        this.connectionManager.connect("ws://localhost:3000"); //uncomment this if you want to play locally
+        this.connectionManager.connect("ws://localhost:4000"); //uncomment this if you want to play locally
         //this.connectionManager.connect("https://multiplayer-tetris-bd80c58c0ffa.herokuapp.com/"); //uncomment this if you want to play globally
     }
 
@@ -28,6 +30,9 @@ export default class SnakeManager extends React.Component {
     createPlayer = (playerId = "localPlayer" ) => {
         const events = new Events();
         const isLocalPlayer = this.state.players.size === 0 ? true : false;
+        const oppSnake = [];
+        const foodLocation = {x:0,y:0};
+        const score = 0;
         const gameState = {oppSnake, foodLocation, score};
         this.setState(prev => 
             prev.players.set(playerId, { events, isLocalPlayer, gameState})
@@ -66,7 +71,20 @@ export default class SnakeManager extends React.Component {
     }
 
     render() {
-        return (<></>);
+        return (
+            // <>
+            //     {([...this.state.players.entries()].map(([playerId, { events, isLocalPlayer, gameState }], index) => (
+            //         <>
+            //             {isLocalPlayer ? (
+            //                 <OnlineSnake onSelectMode={this.props.onSelectMode} connectionManager={this.connectionManager} players={this.players} events={events}/>
+            //             ) : (<></>)}
+            //         </>
+            //     )))}
+            // </>
+            <div id="container">
+                <OnlineSnake onSelectMode={this.props.onSelectMode} connectionManager={this.connectionManager} players={this.players}/>
+            </div>
+        );
     }
 
 }

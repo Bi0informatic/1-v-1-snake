@@ -14,9 +14,27 @@ export default class ConnectionManager {
             this.watchEvents();
         });
 
+        this.conn.on("disconnect", (reason)=>{
+            console.warn("Connection lost: ", reason);
+            alert("Connection has been lost");
+        })
+
+        this.conn.on("connect_error", (error) =>{
+            console.error("Connection error: ", error);
+        })
+
+
         this.conn.on("message", data => {
             this.recieve(data);
         });
+    }
+
+    disconnect() {
+        if (this.conn) {
+            this.conn.disconnect();
+            window.location = "";
+            console.log("Disconnected from server");
+        }
     }
 
     initSession() {
@@ -55,13 +73,14 @@ export default class ConnectionManager {
     updateManager(peers) {
         const me = peers.you;
         const clients = peers.clients.filter(client => me !== client);
+        // makes sure that peers has every client except for the current one
         clients.forEach(client => {
             if (!this.peers.has(client)) {
                 this.snakeManager.createPlayer(client);
                 this.peers.set(client, client);
             }
         });
-
+        // removes clients that are not in peers
         this.peers.forEach(client => {
             if (clients.findIndex(id => id === client) === -1) {
                 console.log("Remove ", client);
@@ -92,6 +111,7 @@ export default class ConnectionManager {
         const data = JSON.parse(msg);
         console.log("Recieved Message: ", data);
         switch (data.type) {
+            // adds id to site when session has been joined
             case "session-created": {
                 window.location.hash = data.id;
                 break;

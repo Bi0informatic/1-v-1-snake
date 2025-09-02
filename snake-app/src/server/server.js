@@ -55,6 +55,18 @@ io.on("connection", socket => {
 
         }
     });
+
+    socket.on("disconnect", () => {
+        console.log("Connection closed");
+        const session = client.session;
+        if (session) {
+            session.leave(client);
+            if (session.clients.size === 0) {
+                sessions.delete(session.id);
+            }
+            broadcastSession(session);
+        }
+    })
 });
 
 
