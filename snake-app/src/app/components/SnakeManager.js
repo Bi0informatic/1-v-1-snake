@@ -82,7 +82,9 @@ export default class SnakeManager extends React.Component {
             //     )))}
             // </>
             <div id="container">
-                <OnlineSnake onSelectMode={this.props.onSelectMode} connectionManager={this.connectionManager} players={this.players}/>
+                {this.state.players.has("localPlayer") && (
+                    <OnlineSnake onSelectMode={this.props.onSelectMode} connectionManager={this.connectionManager} players={this.state.players}/>)
+                }
             </div>
         );
     }

@@ -92,13 +92,13 @@ export default class ConnectionManager {
         const sorted = peers.clients.map(client => this.peers.get(client) || "localPlayer");
         this.snakeManager.sortPlayers(sorted);
     }
-
+    //
     updatePeer(id, [prop, value]) {
         if (!this.peers.has(id)) {
             console.error("Client does not exist ", id);
             return;
         }
-        this.snakeManager.updateSnakeManager(id, { prop, value });
+        this.snakeManager.updateSnakeState(id, { prop, value });
     }
 
     send(data) {

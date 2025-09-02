@@ -6,7 +6,13 @@ import ScoreBoard from './ScoreBoard.js';
 import GameCanvas from './GameCanvas.js';
 import Controls from './Controls.js';
 
-export default function OnlineSnake({onSelectMode, connectionManager, players, events}) {
+export default function OnlineSnake({onSelectMode, connectionManager, players}) {
+  const player = players.get("localPlayer");
+  const events = player.events;
+  const gameState = player.gameState;
+  const oppSnake = gameState.oppSnake;
+  const foodLocation = gameState.foodLocation;
+  const scoreGameState = gameState.score;
   const [tickSpeed, setTickSpeed] = useState(80);
   const {
     snake1,
@@ -17,7 +23,6 @@ export default function OnlineSnake({onSelectMode, connectionManager, players, e
     startGame,
     resetHighscore,
   } = useSnakeGame(tickSpeed);
-
   return (
     <React.Fragment>
       <ScoreBoard score={score} highscore={highscore}/>

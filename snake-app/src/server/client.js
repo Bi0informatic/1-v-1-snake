@@ -18,7 +18,7 @@ export default class Client {
             client.send(data);
         })
     }
-
+    // sends msg to client/socket
     send(data) {
         const msg = JSON.stringify(data);
         console.log(`Sending message: ${msg}`);
