@@ -12,8 +12,8 @@ export default function OnlineSnake({onSelectMode, connectionManager, players}) 
   const events = player.events;
   const gameState = player.gameState;
   const oppSnake = gameState.oppSnake;
-  const food1GameState = gameState.food1;
-  const food2GameState = gameState.food2;
+  const food1Temp = gameState.food1;
+  const food2Temp = gameState.food2;
   const scoreGameState = gameState.score;
   const [tickSpeed, setTickSpeed] = useState(80);
   const {
@@ -25,7 +25,7 @@ export default function OnlineSnake({onSelectMode, connectionManager, players}) 
     running,
     startGame,
     resetHighscore,
-  } = useOnlineGame(tickSpeed, oppSnake, food1GameState, food2GameState);
+  } = useOnlineGame(tickSpeed, oppSnake, food1Temp, food2Temp);
   // sends running when running is changed :connectionManager must also be changed when adding emits
   useEffect(()=>{
     events.emit("running", running);
@@ -34,6 +34,14 @@ export default function OnlineSnake({onSelectMode, connectionManager, players}) 
   useEffect(()=>{
     events.emit("oppSnake", oppSnake);
   }, [events, oppSnake]);
+
+  useEffect(()=>{
+    events.emit("food1", food1);
+  }, [events, food1]);
+
+  useEffect(()=>{
+    events.emit("food2", food2);
+  }, [events, food2]);
 
   return (
     <React.Fragment>
