@@ -2,9 +2,6 @@ export default class Client {
     constructor(conn, id) {
         this.conn = conn;
         this.id = id;
-        this.session = null;
-        this.snake = null;
-        this.dir = null;
     }
 
     broadcast(data) {
@@ -29,9 +26,5 @@ export default class Client {
                 console.log("Message failed", msg, err);
             }
         })
-    }
-
-    setSnake(snake) {
-        this.snake = snake;
     }
 }
