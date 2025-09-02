@@ -31,9 +31,10 @@ export default class SnakeManager extends React.Component {
         const events = new Events();
         const isLocalPlayer = this.state.players.size === 0 ? true : false;
         const oppSnake = [];
-        const foodLocation = {x:0,y:0};
+        const food1 = {x:0,y:0};
+        const food2 = {x:0,y:0};
         const score = 0;
-        const gameState = {oppSnake, foodLocation, score};
+        const gameState = {oppSnake, food1, food2, score};
         this.setState(prev => 
             prev.players.set(playerId, { events, isLocalPlayer, gameState})
         );

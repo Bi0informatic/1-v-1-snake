@@ -25,7 +25,7 @@ export default function GameCanvas({snake1, snake2, food1, food2, running}) {
         drawBackground(ctx);
 
         drawFood(ctx, food1);
-        if (snake2) {
+        if (food2) {
             drawFood(ctx, food2);
         }
         drawSnake(ctx, snake1, snakeColor1);

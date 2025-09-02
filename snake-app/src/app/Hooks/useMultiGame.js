@@ -31,9 +31,9 @@ export function useMultiGame(tickSpeed) {
         setFoodLocation(setFood2, snake1, snake2) 
         }, [snake1, snake2]);
 
-        useLayoutEffect(()=>{
-            setHighscore(window.localStorage.getItem("highscore"));
-        },[]);
+    useLayoutEffect(()=>{
+        setHighscore(window.localStorage.getItem("highscore"));
+    },[]);
 
     const startGame = useCallback(()=>{
         const restartButton = document.getElementById("restart-button");

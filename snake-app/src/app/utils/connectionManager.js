@@ -54,7 +54,8 @@ export default class ConnectionManager {
     watchEvents() {
         const localPlayer = this.snakeManager.state.players.get("localPlayer");
         const events = localPlayer.events;
-        [].forEach((prop)=>{
+        // creates a listener for each state
+        ["running", "oppSnake", "food1", "food2"].forEach((prop)=>{
             events.listen(prop, value => {
                 this.send({
                     type: "state-update",
