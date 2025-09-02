@@ -1,4 +1,5 @@
 export default class Session {
+    // session should only start if there are two players
     constructor(id) {
         this.id = id;
         this.clients = new Set();
@@ -27,9 +28,12 @@ export default class Session {
     stopGameLoop() {
         clearInterval(this.interval);
     }
-
+    // iterates state.players
     updateGameState() {
         // move snakes, check collisions, update food and etc
+        // update food
+        // check for collisions
+        // move snakes
     }
 
     broadcastGameState() {
@@ -40,7 +44,7 @@ export default class Session {
             })
         })
     }
-
+    // player = {id, snake, dir}
     createInitialPlayerState(id) {
         if (this.state.players.size === 0) {
             return {
