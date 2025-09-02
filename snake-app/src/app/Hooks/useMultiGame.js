@@ -17,7 +17,7 @@ const initialSnake2 = [
 
 export function useMultiGame(tickSpeed) {
     const [snake1, setSnake1] = useState(initialSnake1);
-    const [snake2, setSnake2] = useState(initialSnake2)
+    const [snake2, setSnake2] = useState(initialSnake2);
     const [food1, setFood1] = useState({x: 0, y: 0});
     const [food2, setFood2] = useState ({x: 0, y: 0});
     const [dir1, setDir1] = useState({x: unitSize, y: 0});

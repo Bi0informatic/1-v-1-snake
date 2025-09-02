@@ -46,6 +46,9 @@ io.on("connection", socket => {
                 broadcastSession(session);
                 break;
             }
+            case "start-session": {
+                
+            }
             case "state-update":
                 client.broadcast(data);
                 break;
