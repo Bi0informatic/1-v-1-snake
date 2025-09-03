@@ -47,6 +47,20 @@ io.on("connection", socket => {
                 break;
             }
             case "start-session": {
+                const session = getSession(data.id);
+                if (!session) return;
+                session.readyClients.add(client.id);
+
+                client.broadcast({
+                    type: "player-ready",
+                    id: client.id
+                })
+                if (session.readyClients == CLIENT_LIMIT) {
+                    session.startGameLoop();
+                }
+                session.clients.forEach(c => {
+                    c.send({ type: "game-started" });
+                });
                 // both players must press play to trigger
                 // broadcast start-request then once both are true will start game
             }

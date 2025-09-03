@@ -2,6 +2,7 @@ export default class Client {
     constructor(conn, id) {
         this.conn = conn;
         this.id = id;
+        this.session = null;
     }
 
     broadcast(data) {

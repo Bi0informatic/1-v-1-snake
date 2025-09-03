@@ -3,6 +3,7 @@ export default class Session {
     constructor(id) {
         this.id = id;
         this.clients = new Set();
+        this.readyClients = new Set();
         this.state = this.initializeGameState();
         this.tickSpeed = 80;
         this.interval = null;
@@ -22,6 +23,7 @@ export default class Session {
     startGameLoop() {
         if (this.state.players.length == 1) {
             const client = [...this.clients][0];
+            // poll to check for any new players?
             client.send({
                 type: "need-more-players"
             })
@@ -29,6 +31,10 @@ export default class Session {
         } else if (this.state.players.length == 0) {
             return;
         };
+        // assume only two players concurrently max
+        [...this.readyClients].forEach((client)=>{
+            this.createInitialPlayerState(client.id);
+        })
         this.interval = setInterval(()=>{
             this.updateGameState();
             this.broadcastGameState();
@@ -36,6 +42,7 @@ export default class Session {
     }
     stopGameLoop() {
         clearInterval(this.interval);
+        this.interval = null;
     }
     // iterates state.players
     updateGameState() {
@@ -43,6 +50,8 @@ export default class Session {
         // update food
         // check for collisions
         // move snakes
+        if (this.state.players.length < 2) return; // game ends if less than 2?
+
         const snake1 = this.state.players[0].snake;
         const snake2 = this.state.players[1].snake;
         const dir1 = this.state.players[0].dir;
@@ -62,15 +71,17 @@ export default class Session {
     }
 
     broadcastGameState() {
-        this.clients.forEach(client => {
-            client.send({
-                type: "game-tick",
-                state: this.state
-            })
-        })
+        try {[...this.clients].forEach((client)=>{
+                client.send({ type: "game-tick", state: this.state })
+            });
+            } catch (err) {
+            console.error("Failed to send game state", err);
+        }
     }
     // player = {id, snake, dir}
+    // createInitialPlayerState should only ever be run twice in a session
     createInitialPlayerState(id) {
+        if (this.state.players.some(p => p.id === id)) return;
         if (this.state.players.length === 0) {
             this.state.players.push({
                 id,
@@ -91,6 +102,7 @@ export default class Session {
                 ],
                 dir: {x: -this.unitSize, y: 0}
             })
+            this.createFood();
         }
     }
 
@@ -98,9 +110,11 @@ export default class Session {
         const rand = (max) => {
                 return Math.round((Math.random() * max) / this.unitSize) * this.unitSize;
             };
+        let attempts = 0;
         let foodLocation = {x: rand(this.canvasSize - this.unitSize), y: rand(this.canvasSize - this.unitSize)};
-        while (snake1.some(seg => seg.x == foodLocation.x && seg.y == foodLocation.y) || snake2.some(seg => seg.x == foodLocation.x && seg.y == foodLocation.y)) {
+        while ((snake1.some(seg => seg.x == foodLocation.x && seg.y == foodLocation.y) || snake2.some(seg => seg.x == foodLocation.x && seg.y == foodLocation.y)) && attempts < 1000) {
             foodLocation = {x: rand(this.canvasSize - this.unitSize), y: rand(this.canvasSize - this.unitSize)};
+            attempts++;
         }
         setFood({x: foodLocation.x, y: foodLocation.y});
     }
@@ -208,7 +222,7 @@ export default class Session {
         if (client.session !== this) {
             throw new Error("Client not in session");
         }
-
+        // needs to end session when client is leaves
         this.clients.delete(client);
         client.session = null;
     }
