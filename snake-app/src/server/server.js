@@ -47,7 +47,8 @@ io.on("connection", socket => {
                 break;
             }
             case "start-session": {
-                
+                // both players must press play to trigger
+                // broadcast start-request then once both are true will start game
             }
             case "state-update":
                 client.broadcast(data);
