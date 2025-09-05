@@ -38,6 +38,7 @@ export default class Session {
         this.interval = setInterval(()=>{
             this.updateGameState();
             this.broadcastGameState();
+            console.log("tick");
         }, this.tickSpeed);
     }
     stopGameLoop() {

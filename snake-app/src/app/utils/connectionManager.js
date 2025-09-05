@@ -12,6 +12,7 @@ export default class ConnectionManager {
             console.log("Connection established");
             this.initSession();
             this.watchEvents();
+            this.onReady();
         });
 
         this.conn.on("disconnect", (reason)=>{
@@ -100,6 +101,11 @@ export default class ConnectionManager {
             return;
         }
         this.snakeManager.updateSnakeState(id, { prop, value });
+    }
+
+    onReady(){
+        const sessionId = window.location.hash.split("#")[1];
+        this.send({type:"start-session", id:sessionId});
     }
 
     send(data) {

@@ -1,3 +1,4 @@
+import { connection } from 'next/server';
 import React from 'react';
 
 export default function Controls({onRestart, onSetSpeed, onResetHighscore, onSelectMode, connectionManager}) {
@@ -7,6 +8,7 @@ export default function Controls({onRestart, onSetSpeed, onResetHighscore, onSel
         }
     }
     return (<div id="control-buttons">
+        {connectionManager && <button id="restart-button" className="start button" onClick={connectionManager.onReady}>Ready</button>}
         <button id="restart-button" className="start button" onClick={onRestart}>Start</button>
         <button id="easy-button" className="difficulty button" onClick={()=>{onSetSpeed(100); onRestart();}}>Easy</button>
         <button id="normal-button" className="difficulty button" onClick={()=>{onSetSpeed(80); onRestart();}}>Normal</button>
