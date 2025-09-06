@@ -1,7 +1,7 @@
 'use client'
 
 import React from "react";
-import GameHandler from "./components/GameHandler";
+import GameHandler from "./components/menu/GameHandler";
 import { useEffect, useState } from "react";
 import socket from "./socket";
 

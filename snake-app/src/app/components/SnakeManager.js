@@ -7,11 +7,12 @@ import OnlineSnake from './OnlineSnake';
 export default class SnakeManager extends React.Component {
     
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             players: new Map()
         }
+        window.location.hash = "" || this.props.gameId;
     }
 
     componentDidMount() {
